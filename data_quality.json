@@ -33,7 +33,7 @@
         "label": "Omni",
         "image_path": "omni.png",
         "values": [
-            "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks", "Web Search"
+            "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks"
         ]
     }
 ]
