@@ -1,7 +1,7 @@
 [
     {
         "label": "ChatGPT",
-        "image_path": "chatgpt.png",
+        "image_path": "chatgpt_light.png",
         "values": []
     },
     {
@@ -31,7 +31,7 @@
     },
     {
         "label": "Omni",
-        "image_path": "omni.png",
+        "image_path": "omni_light.png",
         "values": [
             "Dynamic Model", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks", "Web Search", "Integrated Server/DB", "Shared Client-Server"
         ]

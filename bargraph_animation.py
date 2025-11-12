@@ -5,6 +5,9 @@ from PIL import Image
 import os
 import json
 import glob
+from multiprocessing import Pool, cpu_count
+import tempfile
+import shutil
 
 def load_data_from_json(json_path='data.json'):
     """Load product data from a JSON file."""
@@ -92,15 +95,23 @@ def get_value_color_mapping(data_points):
     
     return value_to_color
 
-def create_animated_gif(data_points, animation_num, output_path, partial_mode=False):
+def create_animated_gif(data_points, animation_num, output_path, partial_mode=False, title='Quality'):
     """
     Create an animated GIF showing the bar growing upwards.
     On animation n, all bars x<n are static, only bar n animates.
     Each block has a 1 second delay when completed before the next block starts.
 
-    If partial_mode is True, only shows the currently animating bar.
+    If partial_mode is True, only shows the currently animating bar with transparent background.
     """
-    fig, ax = plt.subplots(figsize=(12, 8))
+    # Adjust figure size for partial mode (narrower)
+    if partial_mode:
+        # 2.5 inches at 100 DPI = exactly 250 pixels wide
+        fig, ax = plt.subplots(figsize=(2.5, 8))
+        # Set black background for partial mode
+        fig.patch.set_facecolor('black')
+        ax.set_facecolor('black')
+    else:
+        fig, ax = plt.subplots(figsize=(12, 8))
 
     if partial_mode:
         # Only show the currently animating bar
@@ -112,13 +123,20 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
         current_data = data_points[:animation_num]
         display_animation_num = animation_num
     max_height = max(len(dp['values']) for dp in data_points) + 2
-    
+
     # Get value-to-color mapping
     value_color_map = get_value_color_mapping(data_points)
-    
-    ax.set_xlim(-1, len(data_points) * 3.3 - 1)
+
+    if partial_mode:
+        # Fit width to single bar with extra space for text
+        ax.set_xlim(-1.5, 2)
+        # No title in partial mode
+    else:
+        # Full width for all bars
+        ax.set_xlim(-1, len(data_points) * 3.3 - 1)
+        ax.set_title(title, fontsize=16, fontweight='bold')
+
     ax.set_ylim(-2.5, max_height)  # Extra space for label and image below
-    ax.set_title('Quality', fontsize=16, fontweight='bold')
     
     # Remove Y-axis numbering and horizontal grid lines
     ax.set_yticks([])
@@ -172,13 +190,12 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
                 total_frames += FRAMES_PER_BLOCK_OLD + DELAY_FRAMES_OLD
             else:
                 total_frames += FRAMES_PER_BLOCK_NEW + DELAY_FRAMES_NEW
+
+        # Ensure at least 1 frame (for empty or very short animations)
+        if total_frames == 0:
+            total_frames = 30  # Minimum animation duration
     else:
         total_frames = 60
-    
-    # Store animation elements
-    rects = []
-    texts = []
-    images = []
     
     def init():
         return []
@@ -225,16 +242,24 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
         return animated_height
     
     def animate(frame):
-        # Clear previous frame elements
-        for rect in rects:
-            rect.remove()
-        rects.clear()
-        for text in texts:
-            text.remove()
-        texts.clear()
-        for img in images:
-            img.remove()
-        images.clear()
+        # Clear the axes completely to avoid artifacts
+        ax.clear()
+
+        # Re-apply axes settings after clearing
+        if partial_mode:
+            ax.set_xlim(-1, 1)
+        else:
+            ax.set_xlim(-1, len(data_points) * 3.3 - 1)
+            ax.set_title(title, fontsize=16, fontweight='bold')
+
+        ax.set_ylim(-2.5, max_height)
+        ax.set_yticks([])
+        ax.grid(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.set_xticks([])
         
         for i, data in enumerate(current_data):
             x_pos = i * 3.3  # Triple spacing between bars (with 10% extra)
@@ -261,44 +286,47 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
                     color = value_color_map.get(value, COLORS[0])
                     
                     rect = patches.Rectangle(
-                        (x_pos - 0.3, y_bottom), 
-                        0.6, 
-                        block_height, 
+                        (x_pos - 0.3, y_bottom),
+                        0.6,
+                        block_height,
                         linewidth=1.5,
                         edgecolor='black',
                         facecolor=color,
                         alpha=0.8
                     )
                     ax.add_patch(rect)
-                    rects.append(rect)
                     
                     # Add text if block is mostly visible
                     if block_height > 0.5:
                         # Replace spaces with newlines for multi-word values
                         display_text = value.replace(' ', '\n')
-                        text = ax.text(
+                        ax.text(
                             x_pos + 0.4,
                             y_bottom + block_height/2,
                             display_text,
-                            fontsize=9,
+                            fontsize=11,
                             verticalalignment='center',
-                            fontweight='bold'
+                            fontweight='normal',
+                            color='white',
+                            family='sans-serif',
+                            antialiased=True
                         )
-                        texts.append(text)
                 
                 y_bottom += 1
                 block_index += 1
             
             # Add label text (above the image)
-            label_text = ax.text(
-                x_pos, 
-                -0.8, 
-                data['label'], 
+            ax.text(
+                x_pos,
+                -0.8,
+                data['label'],
                 ha='center',
-                fontsize=12,
-                fontweight='bold'
+                fontsize=14,
+                fontweight='normal',
+                color='white',
+                family='sans-serif',
+                antialiased=True
             )
-            texts.append(label_text)
             
             # Load and display image below the label
             if data['image_path'] and os.path.exists(data['image_path']):
@@ -331,8 +359,7 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
                     y_bottom = y_center - display_height / 2
                     y_top = y_center + display_height / 2
                     
-                    im = ax.imshow(img, extent=[x_left, x_right, y_bottom, y_top], zorder=3)
-                    images.append(im)
+                    ax.imshow(img, extent=[x_left, x_right, y_bottom, y_top], zorder=3)
                 except Exception as e:
                     print(f"Could not load image {data['image_path']}: {e}")
                     # Fallback to placeholder
@@ -346,7 +373,6 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
                         alpha=0.5
                     )
                     ax.add_patch(img_rect)
-                    rects.append(img_rect)
             else:
                 # Draw a placeholder rectangle for the image
                 img_rect = patches.Rectangle(
@@ -359,9 +385,8 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
                     alpha=0.5
                 )
                 ax.add_patch(img_rect)
-                rects.append(img_rect)
-        
-        return rects + texts + images
+
+        return []
     
     # Create animation
     anim = FuncAnimation(
@@ -383,23 +408,37 @@ def create_animated_gif(data_points, animation_num, output_path, partial_mode=Fa
     )
     plt.close()
 
-def process_data_file(json_path):
-    """Process a single data file and create animations."""
+def create_animation_worker(args):
+    """Worker function to create a single animation (both full and partial)."""
+    data, i, full_dir, partial_dir, json_path, title = args
+
+    # TEMPORARILY DISABLED: Create full animation (all bars up to current)
+    # full_path = os.path.join(full_dir, f'animation_{i}.gif')
+    # create_animated_gif(data, i, full_path, partial_mode=False, title=title)
+
+    # Create partial animation (only current bar)
+    partial_path = os.path.join(partial_dir, f'animation_{i}.gif')
+    create_animated_gif(data, i, partial_path, partial_mode=True, title=title)
+
+    return (json_path, i)
+
+def prepare_data_file(json_path):
+    """Prepare a data file and return tasks for parallel processing."""
     # Extract suffix from filename (e.g., data_foo.json -> foo, data.json -> "")
     base_name = os.path.basename(json_path)
     if base_name == 'data.json':
         suffix = ''
         output_dir = 'animations'
+        title = 'Data'
     else:
         # Extract suffix after 'data_'
         suffix = base_name.replace('data_', '').replace('.json', '')
         output_dir = f'animations_{suffix}'
-
-    print(f"\nProcessing {json_path}...")
+        # Convert suffix to title case (e.g., "quality_omni_p2" -> "Quality Omni P2")
+        title = suffix.replace('_', ' ').title()
 
     # Load data from JSON file
     data = load_data_from_json(json_path)
-    print(f"Loaded {len(data)} products from {json_path}.")
 
     # Reorder values so intersecting values appear at the bottom
     data = reorder_values_with_history(data)
@@ -410,22 +449,8 @@ def process_data_file(json_path):
     os.makedirs(full_dir, exist_ok=True)
     os.makedirs(partial_dir, exist_ok=True)
 
-    # Create animated GIFs for each animation
-    for i in range(1, len(data) + 1):
-        print(f"  Creating animated GIF {i} (full and partial)...")
-
-        # Create full animation (all bars up to current)
-        full_path = os.path.join(full_dir, f'animation_{i}.gif')
-        create_animated_gif(data, i, full_path, partial_mode=False)
-
-        # Create partial animation (only current bar)
-        partial_path = os.path.join(partial_dir, f'animation_{i}.gif')
-        create_animated_gif(data, i, partial_path, partial_mode=True)
-
-    print(f"Completed {json_path}!")
-    print(f"  Output directory: {output_dir}/")
-    print(f"    - full/: Full animations with all bars")
-    print(f"    - partial/: Individual bar animations")
+    # Return list of tasks for this data file
+    return [(data, i, full_dir, partial_dir, json_path, title) for i in range(1, len(data) + 1)]
 
 def main():
     print("Creating bar graph animations...\n")
@@ -439,12 +464,42 @@ def main():
 
     print(f"Found {len(data_files)} data file(s): {', '.join(data_files)}\n")
 
-    # Process each data file
-    for data_file in sorted(data_files):
-        process_data_file(data_file)
+    # Sort data files for consistent ordering
+    data_files = sorted(data_files)
+
+    # Prepare all tasks from all data files
+    all_tasks = []
+    for json_path in data_files:
+        print(f"Preparing {json_path}...")
+        tasks = prepare_data_file(json_path)
+        all_tasks.extend(tasks)
+        print(f"  {len(tasks)} animations queued")
+
+    print(f"\nTotal animations to create: {len(all_tasks)}")
+
+    # Use CPU cores minus 2 to leave resources for other work
+    num_workers = max(1, cpu_count() - 2)
+    print(f"Using {num_workers} parallel workers (reserving 2 cores)...\n")
+
+    # Process all animations in parallel
+    completed_count = {}
+    with Pool(num_workers) as pool:
+        for json_path, i in pool.imap_unordered(create_animation_worker, all_tasks):
+            if json_path not in completed_count:
+                completed_count[json_path] = 0
+            completed_count[json_path] += 1
+            print(f"  [{json_path}] Completed animation {i}")
 
     print("\n" + "="*60)
     print("All animations created successfully!")
+    for json_path, count in sorted(completed_count.items()):
+        base_name = os.path.basename(json_path)
+        if base_name == 'data.json':
+            output_dir = 'animations'
+        else:
+            suffix = base_name.replace('data_', '').replace('.json', '')
+            output_dir = f'animations_{suffix}'
+        print(f"  {json_path}: {count} animations -> {output_dir}/")
     print("="*60)
 
 if __name__ == "__main__":

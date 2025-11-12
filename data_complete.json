@@ -1,18 +1,18 @@
 [
     {
         "label": "ChatGPT",
-        "image_path": "chatgpt.png",
+        "image_path": "chatgpt_light.png",
         "values": ["Web Search"]
     },
     {
         "label": "Claude Code",
         "image_path": "claude.png",
-        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Weak Planning", "Web Search"]
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Weak Planning", "Web Search", "Insert Prompt"]
     },
     {
         "label": "Cursor",
         "image_path": "cursor.png",
-        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Weak Planning", "Voice Control"]
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Weak Planning", "Voice Control", "Insert Prompt", "Queue Prompt"]
     },
     {
         "label": "Junie",
@@ -31,9 +31,9 @@
     },
     {
         "label": "Omni",
-        "image_path": "omni.png",
+        "image_path": "omni_light.png",
         "values": [
-            "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks", "Web Search"
+            "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks", "Web Search", "Queue Prompt"
         ]
     }
 ]

@@ -1,7 +1,7 @@
 [
     {
         "label": "ChatGPT",
-        "image_path": "chatgpt.png",
+        "image_path": "chatgpt_light.png",
         "values": []
     },
     {
@@ -31,7 +31,7 @@
     },
     {
         "label": "Omni",
-        "image_path": "omni.png",
+        "image_path": "omni_light.png",
         "values": [
             "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Strong Planning", "Speculative Analysis"
         ]

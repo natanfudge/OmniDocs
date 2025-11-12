@@ -1,9 +1,9 @@
 [
     {
         "label": "Omni",
-        "image_path": "omni.png",
+        "image_path": "omni_light.png",
         "values": [
-            "Compose", "Intelligent Testing", "Security Auditor", "Visual Testing", "Optimizer", "Researcher", "Visual Designer", "Dedicated Test Writer", "Dedicated Test Runner", "Spokesperson", "Context Optimization", "Open Source", "Open Documentation"
+            "Compose", "Intelligent Testing", "Security Auditor", "Visual Testing", "Optimizer", "Researcher", "Visual Designer", "Dedicated Test Writer", "Dedicated TestRunner", "Spokesperson", "Context Optimization", "Open Source", "Open Documentation"
         ]
     }
 ]

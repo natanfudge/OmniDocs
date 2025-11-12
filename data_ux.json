@@ -1,18 +1,18 @@
 [
     {
         "label": "ChatGPT",
-        "image_path": "chatgpt.png",
+        "image_path": "chatgpt_light.png",
         "values": []
     },
     {
         "label": "Claude Code",
         "image_path": "claude.png",
-        "values": []
+        "values": ["Insert Prompt"]
     },
     {
         "label": "Cursor",
         "image_path": "cursor.png",
-        "values": ["Voice Control"]
+        "values": ["Voice Control", "Insert Prompt", "Queue Prompt"]
     },
     {
         "label": "Junie",
@@ -31,9 +31,9 @@
     },
     {
         "label": "Omni",
-        "image_path": "omni.png",
+        "image_path": "omni_light.png",
         "values": [
-            "Live Preview", "Mobile App", "Web App", "Voice Control", "Spokesperson"
+            "Live Preview", "Mobile App", "Web App", "Voice Control", "Spokesperson", "Insert Prompt", "Queue Prompt"
         ]
     }
 ]

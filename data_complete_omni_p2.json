@@ -1,9 +1,9 @@
 [
     {
         "label": "Omni",
-        "image_path": "omni.png",
+        "image_path": "omni_light.png",
         "values": [
-            "Integrated Server/DB", "Live Preview", "Mobile App", "Web App", "Voice Control", "Speculative Analysis", "Fast Analysis", "Shared Client-Server", "Find Definition", "Find Usages", "Speculative Reading", "Speculative Structure Analysis", "Incremental Testing"
+            "Integrated Server/DB", "Live Preview", "Mobile App", "Web App", "Voice Control", "Speculative Analysis", "Fast Analysis", "Shared Client-Server", "Find Definition", "Find Usages", "Speculative Reading", "Speculative Structure Analysis", "Incremental Testing", "Insert Prompt"
         ]
     }
 ]
