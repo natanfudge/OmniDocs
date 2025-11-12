@@ -1,0 +1,39 @@
+[
+    {
+        "label": "ChatGPT",
+        "image_path": "chatgpt.png",
+        "values": []
+    },
+    {
+        "label": "Claude Code",
+        "image_path": "claude.png",
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write"]
+    },
+    {
+        "label": "Cursor",
+        "image_path": "cursor.png",
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model"]
+    },
+    {
+        "label": "Junie",
+        "image_path": "junie.png",
+        "values": ["Find File", "Search& Replace", "Rename Symbol", "Structure Analysis", "Speculative Analysis"]
+    },
+    {
+        "label": "Replit",
+        "image_path": "replit.png",
+        "values": ["Find File", "Search& Replace"]
+    },
+    {
+        "label": "Roo Code",
+        "image_path": "roo.png",
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Speculative Listing", "Orchestrator", "Strong Planning"]
+    },
+    {
+        "label": "Omni",
+        "image_path": "omni.png",
+        "values": [
+            "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Strong Planning", "Speculative Analysis"
+        ]
+    }
+]

@@ -1,0 +1,9 @@
+[
+    {
+        "label": "Omni",
+        "image_path": "omni.png",
+        "values": [
+            "Shared Client-Server", "Find Definition", "Find Usages", "Speculative Reading", "Speculative Structure Analysis", "Compose", "Optimizer", "Researcher", "Dedicated Test Writer", "Dedicated Test Runner", "Context Optimization", "Open Source", "Open Documentation"
+        ]
+    }
+]

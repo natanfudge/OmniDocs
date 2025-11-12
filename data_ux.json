@@ -7,33 +7,33 @@
     {
         "label": "Claude Code",
         "image_path": "claude.png",
-        "values": ["Weak Planning", "Web Search"]
+        "values": []
     },
     {
         "label": "Cursor",
         "image_path": "cursor.png",
-        "values": ["Dynamic Model", "Weak Planning", "Compilation Checks"]
+        "values": ["Voice Control"]
     },
     {
         "label": "Junie",
         "image_path": "junie.png",
-        "values": ["Structure Analysis", "Automatic Testing", "Compilation Checks"]
+        "values": []
     },
     {
         "label": "Replit",
         "image_path": "replit.png",
-        "values": ["Weak Planning", "Automatic Testing", "Integrated Server/DB"]
+        "values": ["Live Preview", "Mobile App", "Web App", "Voice Control"]
     },
     {
         "label": "Roo Code",
         "image_path": "roo.png",
-        "values": ["Orchestrator", "Weak Planning", "Strong Planning"]
+        "values": []
     },
     {
         "label": "Omni",
         "image_path": "omni.png",
         "values": [
-            "Dynamic Model", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks", "Web Search", "Integrated Server/DB", "Shared Client-Server"
+            "Live Preview", "Mobile App", "Web App", "Voice Control", "Spokesperson"
         ]
     }
 ]
