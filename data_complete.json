@@ -1,0 +1,39 @@
+[
+    {
+        "label": "ChatGPT",
+        "image_path": "chatgpt.png",
+        "values": ["Web Search"]
+    },
+    {
+        "label": "Claude Code",
+        "image_path": "claude.png",
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Weak Planning", "Web Search"]
+    },
+    {
+        "label": "Cursor",
+        "image_path": "cursor.png",
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Weak Planning", "Voice Control"]
+    },
+    {
+        "label": "Junie",
+        "image_path": "junie.png",
+        "values": ["Find File", "Search& Replace", "Rename Symbol", "Structure Analysis", "Automatic Testing", "Compilation Checks", "Speculative Analysis", "Fast Analysis"]
+    },
+    {
+        "label": "Replit",
+        "image_path": "replit.png",
+        "values": ["Find File", "Search& Replace", "Weak Planning", "Automatic Testing", "Integrated Server/DB", "Live Preview", "Mobile App", "Web App", "Voice Control"]
+    },
+    {
+        "label": "Roo Code",
+        "image_path": "roo.png",
+        "values": ["Find File", "Search& Replace", "Multi-Read/ Write", "Speculative Listing", "Orchestrator","Weak Planning", "Strong Planning"]
+    },
+    {
+        "label": "Omni",
+        "image_path": "omni.png",
+        "values": [
+            "Find File", "Search& Replace", "Multi-Read/ Write", "Dynamic Model", "Rename Symbol", "Speculative Listing", "Orchestrator", "Structure Analysis", "Weak Planning", "Strong Planning", "Automatic Testing", "Compilation Checks"
+        ]
+    }
+]
